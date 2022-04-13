@@ -2,7 +2,7 @@ import * as THREE from "three"
 import React, { useMemo, useRef, useState, Suspense, useLayoutEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, Instances, Instance, OrbitControls, Html } from '@react-three/drei'
+import { useGLTF, Instances, Instance, OrbitControls, Html, Reflector, CameraShake, useTexture } from '@react-three/drei'
 import { EffectComposer, Bloom, Glitch } from '@react-three/postprocessing'
 
 const color = new THREE.Color()
@@ -101,9 +101,9 @@ function Point({ nodeId, position, dialogData, onNodeSelected, onNodeClick }) {
         <Instance
           ref={ref}
           /* eslint-disable-next-line */
-          onPointerOver={(e) => (e.stopPropagation(), setHover(true), onNodeSelected(nodeId))}
-          onPointerOut={() => setHover(false)}
-          onClick={(e) => onNodeClick(dialogData.hash)}
+          // onPointerOver={(e) => (e.stopPropagation(), setHover(true), onNodeSelected(nodeId))}
+          // onPointerOut={() => setHover(false)}
+          // onClick={(e) => onNodeClick(dialogData.hash)}
         />
       </>
     </group>
@@ -180,7 +180,7 @@ function Lights() {
   return (
     <>
       <group ref={groupL}>
-        <pointLight color={brandPalette[0]} position={[15, 0, 0]} distance={15} intensity={10} />
+        <pointLight color={brandPalette[0]} position={[15, 0, 0]} distance={15} intensity={20} />
       </group>
       <group ref={groupR}>
         <pointLight color={brandPalette[1]} position={[-15, 0, 0]} distance={15} intensity={10} />
@@ -244,6 +244,15 @@ function Particles({ count }) {
   )
 }
 
+function Ground(props) {
+  const [floor, normal] = useTexture(['/assets/SurfaceImperfections003_1K_var1.jpg', '/assets/SurfaceImperfections003_1K_Normal.jpg'])
+  return (
+    <Reflector resolution={1024} args={[8, 8]} {...props}>
+      {(Material, props) => <Material color="#f0f0f0" metalness={0} roughnessMap={floor} normalMap={normal} normalScale={[2, 2]} {...props} />}
+    </Reflector>
+  )
+}
+
 function ThreeCanary(props) {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
@@ -252,20 +261,24 @@ function ThreeCanary(props) {
 
       <Lights />
       {/* <fog attach="fog" args={[brandPalette[-1], 4.5, 20]} /> */}
-      <gridHelper position={[0, -0.135, 0]} color={"#000"} args={[40, 40]} />
+      <gridHelper position={[0, -0.155, 0]} color={new THREE.Color(brandPalette[3])} args={[40, 40]} />
 
       <Suspense fallback={null}>
         <Model scale={0.1} objectUrl={props.objectUrl} />
         <Points objectUrl={props.objectUrl} nodesData={props.nodes} onNodeClick={props.onNodeClick} />
-        <Particles count={isMobile ? 50 : 200} />
+        <Particles count={isMobile ? 100 : 200} />
+        <Ground mirror={1} blur={[500, 100]} mixBlur={12} mixStrength={1.5} rotation={[-Math.PI / 2, 0, Math.PI / 2]} position-y={-0.145} />
 
         <EffectComposer multisampling={16}>
-          <Bloom kernelSize={2} luminanceThreshold={0.01} luminanceSmoothing={0.05} intensity={0.1} />
-          <Glitch delay={[20, 30]} />
+          <Bloom kernelSize={1} luminanceThreshold={0.01} luminanceSmoothing={0.05} intensity={0.2} />
+          <Bloom kernelSize={3} luminanceThreshold={0} luminanceSmoothing={0.4} intensity={0.6} />
+          {/* <Bloom kernelSize={10} luminanceThreshold={0} luminanceSmoothing={0} intensity={0.5} /> */}
+          <Glitch delay={[10, 20]} ratio={0.85}  />
         </EffectComposer>
       </Suspense>
 
-      <OrbitControls minPolarAngle={Math.PI / 2.8} maxPolarAngle={Math.PI / 1.8} />
+      {/* <CameraShake yawFrequency={0.2} pitchFrequency={0.2} rollFrequency={0.2} /> */}
+      <OrbitControls minPolarAngle={Math.PI / 2.8} maxPolarAngle={Math.PI / 1.8} autoRotate={true} />
     </Canvas>
   )
 }
