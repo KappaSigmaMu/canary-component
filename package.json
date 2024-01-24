@@ -59,5 +59,8 @@
   },
   "homepage": "https://github.com/KappaSigmaMu/canary-component#readme",
   "author": "Vilson Vieira",
+  "contributors": [
+    "Lauro Gripa"
+  ],
   "license": "MIT"
 }
