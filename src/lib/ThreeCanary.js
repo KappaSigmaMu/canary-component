@@ -8,8 +8,9 @@ import {
   Instance,
   OrbitControls,
   Html,
+  PerspectiveCamera,
 } from "@react-three/drei"
-import { Canvas, useFrame } from "@react-three/fiber"
+import { useThree, extend, Canvas, useFrame } from "@react-three/fiber"
 import { EffectComposer, Bloom, Glitch } from "@react-three/postprocessing"
 import React, {
   useMemo,
@@ -17,9 +18,11 @@ import React, {
   useState,
   Suspense,
   useLayoutEffect,
+  useEffect,
 } from "react"
 import styled, { keyframes } from "styled-components"
 import * as THREE from "three"
+import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls"
 import { canaryConfig } from "./CanaryConfig"
 import { gilConfig } from "./GilConfig"
 
@@ -390,18 +393,61 @@ const Particles = ({ count }) => {
   )
 }
 
+extend({ OC })
+
+const CameraControls = ({ config }) => {
+  const controlsRef = useRef()
+  const { camera, gl } = useThree()
+
+  useEffect(() => {
+    if (!config.debug) return
+
+    const controls = new OC(camera, gl.domElement)
+
+    controls.addEventListener("change", () => {
+      console.log(camera.position)
+      console.log(controlsRef.current.target)
+    })
+
+    return () => controls.dispose()
+  }, [controlsRef, camera, gl.domElement])
+
+  useEffect(() => {
+    if (controlsRef.current) {
+      controlsRef.current.target.set(
+        config.targetPosition[0],
+        config.targetPosition[1],
+        config.targetPosition[2]
+      )
+      controlsRef.current.update()
+    }
+  }, [controlsRef, camera, gl])
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      args={[camera, gl.domElement]}
+      minPolarAngle={Math.PI / 2.8}
+      maxPolarAngle={Math.PI / 2.1}
+    />
+  )
+}
+
 const ThreeCanary = (props) => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
   const config = props.config ? props.config : defaultConfig["canary"]
 
   return (
-    <Canvas
-      shadows
-      dpr={[1, 2]}
-      camera={{ position: config.cameraPosition, fov: 50 }}
-      performance={{ min: 0.1 }}
-    >
+    <Canvas shadows dpr={[1, 2]} performance={{ min: 0.1 }}>
+      <PerspectiveCamera
+        makeDefault
+        position={config.cameraPosition}
+        near={0.1}
+        far={1000}
+        zoom={1}
+      />
+
       <Lights config={config} />
 
       <gridHelper
@@ -441,10 +487,7 @@ const ThreeCanary = (props) => {
         </EffectComposer>
       </Suspense>
 
-      <OrbitControls
-        minPolarAngle={Math.PI / 2.8}
-        maxPolarAngle={Math.PI / 2.1}
-      />
+      <CameraControls config={config} />
     </Canvas>
   )
 }

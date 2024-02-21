@@ -16,7 +16,8 @@ const gilConfig = {
     color: "black",
   },
   gridPosition: [0, -0.35, 0, 0],
-  cameraPosition: [1, 2, 4.5],
+  cameraPosition: [-1, 1.5, 3.75],
+  targetPosition: [2, 0.25, -0.15],
   pointColorIndex: {
     primary: "ciano",
     hovered: "white",

@@ -16,7 +16,8 @@ const canaryConfig = {
     color: "white",
   },
   gridPosition: [0, -0.12, 0.28],
-  cameraPosition: [1.4, 2, 1],
+  cameraPosition: [-1.45, 0.7, 1.85],
+  targetPosition: [2.15, 0.2, 0.18],
   pointColorIndex: {
     primary: "ciano",
     hovered: "magenta",

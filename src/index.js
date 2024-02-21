@@ -53,12 +53,12 @@ class App extends React.Component {
           }}
         >
           <ThreeCanary
-            objectUrl={defaultConfig["gil"].objectUrl}
+            objectUrl={defaultConfig["canary"].objectUrl}
             nodes={this.state.nodesData}
             onNodeClick={(nodeId) => {
               console.log("onNodeClick", nodeId)
             }}
-            config={defaultConfig["gil"]}
+            config={defaultConfig["canary"]}
           />
 
           <div
