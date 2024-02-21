@@ -403,7 +403,7 @@ const ThreeCanary = (props) => {
       performance={{ min: 0.1 }}
     >
       <Lights config={config} />
-      {/* <fog attach="fog" args={[brandPalette.ciano, 4.5, 20]} /> */}
+
       <gridHelper
         position={config.gridPosition}
         color={brandPalette.black}
