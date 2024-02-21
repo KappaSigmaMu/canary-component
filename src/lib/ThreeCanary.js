@@ -1,15 +1,28 @@
 import * as THREE from "three"
-import React, { useMemo, useRef, useState, Suspense, useLayoutEffect } from 'react'
-import styled, { keyframes } from 'styled-components'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, useHelper, Instances, Instance, OrbitControls, Html } from '@react-three/drei'
-import { EffectComposer, Bloom, Glitch } from '@react-three/postprocessing'
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  Suspense,
+  useLayoutEffect,
+} from "react"
+import styled, { keyframes } from "styled-components"
+import { Canvas, useFrame } from "@react-three/fiber"
+import {
+  useGLTF,
+  useHelper,
+  Instances,
+  Instance,
+  OrbitControls,
+  Html,
+} from "@react-three/drei"
+import { EffectComposer, Bloom, Glitch } from "@react-three/postprocessing"
 import { canaryConfig } from "./CanaryConfig"
 import { gilConfig } from "./GilConfig"
 
 const defaultConfig = {
-  "canary": canaryConfig,
-  "gil": gilConfig,
+  canary: canaryConfig,
+  gil: gilConfig,
 }
 
 const color = new THREE.Color()
@@ -18,25 +31,25 @@ const brandPalette = {
   ciano: "#01ffff",
   magenta: "#e6007a",
   white: "#ffffff",
-  black: "#000000"
+  black: "#000000",
 }
 
 // Generate a random integer between min and max
-const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+const random = (min, max) => Math.floor(Math.random() * (max - min)) + min
 
 // Generate N integer numbers (with no repetition) between mix and max
 const randomN = (min, max, n) => {
-  let numbers = [];
+  let numbers = []
   while (numbers.length < n) {
-    let num = random(min, max);
+    let num = random(min, max)
     if (!numbers.includes(num)) {
-      numbers.push(num);
+      numbers.push(num)
     }
   }
-  return numbers;
+  return numbers
 }
 
-const resolve = (path, obj, separator = '.') => {
+const resolve = (path, obj, separator = ".") => {
   let properties = Array.isArray(path) ? path : path.split(separator)
   return properties.reduce((prev, curr) => prev && prev[curr], obj)
 }
@@ -47,15 +60,19 @@ const Points = ({ objectUrl, nodesData, onNodeClick, config }) => {
   const [selected, setSelected] = useState(0)
 
   // Or nodes.Scene.children[0].geometry.attributes.position
-  const positions = config.nodeCoords ?
-    resolve(config.nodeCoords, nodes) : []
+  const positions = config.nodeCoords ? resolve(config.nodeCoords, nodes) : []
   const numPositions = positions.count
   const numNodes = nodesData.length
-  const randomIndexes = useMemo(() =>
-    randomN(0, numPositions, numNodes), [numPositions, numNodes])
+  const randomIndexes = useMemo(
+    () => randomN(0, numPositions, numNodes),
+    [numPositions, numNodes]
+  )
 
-  const selectedPositions = randomIndexes.map((i) =>
-    [positions.getX(i), positions.getY(i), positions.getZ(i)])
+  const selectedPositions = randomIndexes.map((i) => [
+    positions.getX(i),
+    positions.getY(i),
+    positions.getZ(i),
+  ])
 
   const handleSelectedNode = (nodeId) => {
     setSelected(nodeId)
@@ -63,7 +80,7 @@ const Points = ({ objectUrl, nodesData, onNodeClick, config }) => {
 
   return (
     <>
-      {selected ?
+      {selected ? (
         <group scale={config.nodeGroupScale}>
           <PointDialog
             position={selectedPositions[selected]}
@@ -71,34 +88,43 @@ const Points = ({ objectUrl, nodesData, onNodeClick, config }) => {
             onNodeClick={onNodeClick}
             config={config}
           />
-        </group> : null
-      }
+        </group>
+      ) : null}
       <Instances
         range={selectedPositions.length}
         material={new THREE.MeshBasicMaterial()}
-        geometry={new THREE.SphereGeometry(0.1)}>
-        {
-          selectedPositions.map((position, i) => (
-            <Point
-              key={i}
-              nodeId={i}
-              position={position}
-              onNodeSelected={handleSelectedNode}
-              dialogData={nodesData[selected]}
-              onNodeClick={onNodeClick}
-              config={config}
-              primaryColor={config.pointColorIndex.primary}
-              hoveredColor={config.pointColorIndex.hovered}
-              activeColor={config.pointColorIndex.active}
-            />
-          ))
-        }
+        geometry={new THREE.SphereGeometry(0.1)}
+      >
+        {selectedPositions.map((position, i) => (
+          <Point
+            key={i}
+            nodeId={i}
+            position={position}
+            onNodeSelected={handleSelectedNode}
+            dialogData={nodesData[selected]}
+            onNodeClick={onNodeClick}
+            config={config}
+            primaryColor={config.pointColorIndex.primary}
+            hoveredColor={config.pointColorIndex.hovered}
+            activeColor={config.pointColorIndex.active}
+          />
+        ))}
       </Instances>
     </>
   )
 }
 
-const Point = ({ nodeId, position, dialogData, onNodeSelected, onNodeClick, config, primaryColor, hoveredColor, activeColor }) => {
+const Point = ({
+  nodeId,
+  position,
+  dialogData,
+  onNodeSelected,
+  onNodeClick,
+  config,
+  primaryColor,
+  hoveredColor,
+  activeColor,
+}) => {
   const ref = useRef()
   const [hovered, setHover] = useState(false)
   const [active] = useState(false)
@@ -109,33 +135,58 @@ const Point = ({ nodeId, position, dialogData, onNodeSelected, onNodeClick, conf
     ref.current.position.x = position[0] * config.nodeSigns[0]
     ref.current.position.z = position[1] * config.nodeSigns[1]
     ref.current.position.y = position[2] * config.nodeSigns[2]
-    ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = defaultScale
-    ref.current.scale.x = ref.current.scale.y = ref.current.scale.z =
-      THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 6 : 1, defaultScale)
-    ref.current.scale.x = ref.current.scale.y = ref.current.scale.z =
-      THREE.MathUtils.lerp(ref.current.scale.z, active ? 5 : 1, defaultScale)
+    ref.current.scale.x =
+      ref.current.scale.y =
+      ref.current.scale.z =
+        defaultScale
+    ref.current.scale.x =
+      ref.current.scale.y =
+      ref.current.scale.z =
+        THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 6 : 1, defaultScale)
+    ref.current.scale.x =
+      ref.current.scale.y =
+      ref.current.scale.z =
+        THREE.MathUtils.lerp(ref.current.scale.z, active ? 5 : 1, defaultScale)
     ref.current.color.lerp(
-      color.set(hovered || active ? brandPalette[hoveredColor] : brandPalette[primaryColor]),
-      hovered || active ? 1 : defaultScale)
+      color.set(
+        hovered || active
+          ? brandPalette[hoveredColor]
+          : brandPalette[primaryColor]
+      ),
+      hovered || active ? 1 : defaultScale
+    )
 
     if (hovered) {
       ref.current.color.lerp(
-        color.set(hovered ? brandPalette[hoveredColor] : brandPalette[primaryColor]), hovered ? 1 : defaultScale)
+        color.set(
+          hovered ? brandPalette[hoveredColor] : brandPalette[primaryColor]
+        ),
+        hovered ? 1 : defaultScale
+      )
     }
 
     if (active) {
-      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z += Math.sin(t) / 4
+      ref.current.scale.x =
+        ref.current.scale.y =
+        ref.current.scale.z +=
+          Math.sin(t) / 4
       ref.current.color.lerp(
-        color.set(active ? brandPalette[activeColor] : brandPalette[primaryColor]), active ? 1 : defaultScale)
+        color.set(
+          active ? brandPalette[activeColor] : brandPalette[primaryColor]
+        ),
+        active ? 1 : defaultScale
+      )
     }
   })
   return (
-    <group scale={config.nodeGroupScale} >
+    <group scale={config.nodeGroupScale}>
       <>
         <Instance
           ref={ref}
           /* eslint-disable-next-line */
-          onPointerOver={(e) => (e.stopPropagation(), setHover(true), onNodeSelected(nodeId))}
+          onPointerOver={(e) => (
+            e.stopPropagation(), setHover(true), onNodeSelected(nodeId)
+          )}
           onPointerOut={() => setHover(false)}
           onClick={(e) => onNodeClick(dialogData.hash)}
         />
@@ -155,24 +206,25 @@ const PointDialog = ({ position, dialogData, onNodeClick, config }) => {
       new THREE.Vector3(
         position[0] * config.nodeSigns[0] * scale,
         position[2] * config.nodeSigns[2] * scale,
-        position[1] * config.nodeSigns[1] * scale))
+        position[1] * config.nodeSigns[1] * scale
+      )
+    )
     ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = 0.05
     ref.current.position.y += Math.sin(t) / 16
   })
   return (
-
     <mesh ref={ref}>
-      <meshStandardMaterial roughness={0.75} metalness={0.8} emissive={brandPalette.ciano} />
+      <meshStandardMaterial
+        roughness={0.75}
+        metalness={0.8}
+        emissive={brandPalette.ciano}
+      />
       <Html distanceFactor={2}>
         <DialogContent>
-          {dialogData.hash ?
-            <DialogHash>
-              {dialogData.hash}
-            </DialogHash> : null}
+          {dialogData.hash ? <DialogHash>{dialogData.hash}</DialogHash> : null}
         </DialogContent>
       </Html>
     </mesh>
-
   )
 }
 
@@ -186,7 +238,7 @@ const Model = (props) => {
       }
     }
     scene.traverse((obj) => {
-      obj.type === 'Mesh' && (obj.receiveShadow = obj.castShadow = true)
+      obj.type === "Mesh" && (obj.receiveShadow = obj.castShadow = true)
     })
     // 0.8 0.2
     Object.assign(materials[props.model.material], {
@@ -194,9 +246,8 @@ const Model = (props) => {
       metalness: props.model.metalness,
       roughness: props.model.moughness,
       opacity: props.model.opacity,
-      color: new THREE.Color(brandPalette[props.model.color])
+      color: new THREE.Color(brandPalette[props.model.color]),
     })
-
   }, [scene, nodes, materials])
 
   return <primitive object={scene} {...props} />
@@ -212,31 +263,31 @@ const Lights = ({ config }) => {
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
-    
+
     // storm effect
     let currentPosition = 15
-    if (parseInt(t)%4 === 1) {
-      currentPosition = Math.random() * 15 | 0
-    }
-    
-    groupL.current.position.x = Math.sin(t) / 4 * currentPosition;
-    groupL.current.position.y = Math.cos(t) / 4 * currentPosition;
-    groupL.current.position.z = Math.cos(t) / 4 * currentPosition;
+    // if (parseInt(t) % 4 === 1) {
+    //   currentPosition = (Math.random() * 15) | 0
+    // }
 
-    groupR.current.position.x = Math.cos(t) / 4 * 10
-    groupR.current.position.y = Math.sin(t) / 4 * 10
-    groupR.current.position.z = Math.sin(t) / 4 * 10
+    groupL.current.position.x = (Math.sin(t) / 4) * currentPosition
+    groupL.current.position.y = (Math.cos(t) / 4) * currentPosition
+    groupL.current.position.z = (Math.cos(t) / 4) * currentPosition
 
-    front.current.position.x = Math.sin(t) / 4 * 10
-    front.current.position.y = Math.cos(t) / 4 * 10
-    front.current.position.z = Math.sin(t) / 4 * 10
+    groupR.current.position.x = (Math.cos(t) / 4) * 10
+    groupR.current.position.y = (Math.sin(t) / 4) * 10
+    groupR.current.position.z = (Math.sin(t) / 4) * 10
+
+    front.current.position.x = (Math.sin(t) / 4) * 10
+    front.current.position.y = (Math.cos(t) / 4) * 10
+    front.current.position.z = (Math.sin(t) / 4) * 10
   })
 
-  if (config.debug === true) {
-    useHelper(lightL, THREE.PointLightHelper)
-    useHelper(lightR, THREE.PointLightHelper)
-    useHelper(lightF, THREE.PointLightHelper)
-  }
+  // if (config.debug === true) {
+  useHelper(lightL, THREE.PointLightHelper)
+  useHelper(lightR, THREE.PointLightHelper)
+  useHelper(lightF, THREE.PointLightHelper)
+  // }
 
   return (
     <>
@@ -291,7 +342,6 @@ const Particles = ({ count }) => {
   }, [count])
 
   useFrame((state) => {
-
     particles.forEach((particle, i) => {
       let { t, factor, speed, xFactor, yFactor, zFactor } = particle
 
@@ -301,9 +351,18 @@ const Particles = ({ count }) => {
       const s = Math.cos(t) / 6
 
       dummy.position.set(
-        (particle.mx / 10) * a + xFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 1) * factor) / 10,
-        (particle.my / 10) * b + yFactor + Math.sin((t / 10) * factor) + (Math.cos(t * 2) * factor) / 10,
-        (particle.my / 10) * b + zFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 3) * factor) / 10
+        (particle.mx / 10) * a +
+          xFactor +
+          Math.cos((t / 10) * factor) +
+          (Math.sin(t * 1) * factor) / 10,
+        (particle.my / 10) * b +
+          yFactor +
+          Math.sin((t / 10) * factor) +
+          (Math.cos(t * 2) * factor) / 10,
+        (particle.my / 10) * b +
+          zFactor +
+          Math.cos((t / 10) * factor) +
+          (Math.sin(t * 3) * factor) / 10
       )
       dummy.scale.set(s, s, s)
       dummy.rotation.set(s * 5, s * 5, s * 5)
@@ -339,8 +398,8 @@ const ThreeCanary = (props) => {
       shadows
       dpr={[1, 2]}
       camera={{ position: config.cameraPosition, fov: 50 }}
-      performance={{ min: 0.1 }}>
-
+      performance={{ min: 0.1 }}
+    >
       <Lights config={config} />
       {/* <fog attach="fog" args={[brandPalette.ciano, 4.5, 20]} /> */}
       <gridHelper
@@ -363,9 +422,7 @@ const ThreeCanary = (props) => {
           onNodeClick={props.onNodeClick}
           config={config}
         />
-        <Particles
-          count={isMobile ? 50 : 200}
-        />
+        <Particles count={isMobile ? 50 : 200} />
 
         <EffectComposer multisampling={16}>
           <Bloom
@@ -374,7 +431,7 @@ const ThreeCanary = (props) => {
             luminanceSmoothing={config.bloom.luminanceSmoothing}
             intensity={config.bloom.intensity}
           />
-          <Glitch 
+          <Glitch
             delay={config.glitch.delay}
             strength={config.glitch.strength}
             duration={config.glitch.duration}
