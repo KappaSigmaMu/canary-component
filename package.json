@@ -54,7 +54,7 @@
   "bugs": {
     "url": "https://github.com/KappaSigmaMu/canary-component/issues"
   },
-  "homepage": "https://github.com/KappaSigmaMu/canary-component#readme",
+  "homepage": ".",
   "author": "Vilson Vieira",
   "license": "MIT"
 }
