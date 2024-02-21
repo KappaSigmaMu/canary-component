@@ -443,7 +443,7 @@ const ThreeCanary = (props) => {
 
       <OrbitControls
         minPolarAngle={Math.PI / 2.8}
-        maxPolarAngle={Math.PI / 2}
+        maxPolarAngle={Math.PI / 2.1}
       />
     </Canvas>
   )
