@@ -15,20 +15,14 @@ const nodesDataFactory = (n) => {
   let data = []
   for (let i = 0; i < n; i += 1) {
     data.push({
-      "id": Math.floor(Math.random() * 100),
-      "name": choose([
-        "Arthur C. Clarke",
-        "Douglas Adams",
-        "Isaac Asimov"]),
-      "level": choose([
-        "human",
-        "cyborg"]),
-      "hash": choose([
+      id: Math.floor(Math.random() * 100),
+      name: choose(["Arthur C. Clarke", "Douglas Adams", "Isaac Asimov"]),
+      level: choose(["human", "cyborg"]),
+      hash: choose([
         "0x08eded6a76d84e309e3f09705ea2853f",
-        "0xdeadbeefe6a76d84e309e3f09705ea28589"]),
-      "img": choose([
-        "/assets/t1.jpg",
-        "/assets/t2.jpg"])
+        "0xdeadbeefe6a76d84e309e3f09705ea28589",
+      ]),
+      img: choose(["/assets/t1.jpg", "/assets/t2.jpg"]),
     })
   }
   return data
@@ -41,12 +35,12 @@ class App extends React.Component {
     super(props)
     this.state = {
       nodesData: nodesDataFactory(150),
-      nodeSelected: null
+      nodeSelected: null,
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
   render() {
-
     return (
       <>
         <div
@@ -55,7 +49,7 @@ class App extends React.Component {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            height: "100%"
+            height: "100%",
           }}
         >
           <ThreeCanary
@@ -63,8 +57,7 @@ class App extends React.Component {
             nodes={this.state.nodesData}
             onNodeClick={(nodeId) => {
               console.log("onNodeClick", nodeId)
-            }
-            }
+            }}
             config={defaultConfig["canary"]}
           />
 
@@ -72,18 +65,17 @@ class App extends React.Component {
             className={"Info"}
             style={{
               padding: 10,
-              color: this.state.nodeSelected ?
-                this.state.nodeSelected.color : "#ffffff"
+              color: this.state.nodeSelected
+                ? this.state.nodeSelected.color
+                : "#ffffff",
             }}
           >
-            {this.state.nodeSelected ?
-              this.state.nodeSelected.name : ""}
+            {this.state.nodeSelected ? this.state.nodeSelected.name : ""}
           </div>
         </div>
       </>
     )
   }
-
 }
 
 const rootElement = document.getElementById("root")
