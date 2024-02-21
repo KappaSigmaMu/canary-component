@@ -1,6 +1,6 @@
 {
   "name": "@kappasigmamu/canary-component",
-  "version": "0.4.9-experimental",
+  "version": "0.4.10-experimental",
   "description": "React Component that renders the KappaSigmaMu Canary in 3D",
   "keywords": [
     "kusama",
@@ -10,10 +10,10 @@
     "threejs",
     "3d"
   ],
-  "main": "build/index.js",
-  "module": "build/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "files": [
-    "build",
+    "dist",
     "README.md"
   ],
   "repository": {
