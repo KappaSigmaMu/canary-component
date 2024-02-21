@@ -1,3 +1,6 @@
+// https://github.com/jsx-eslint/eslint-plugin-react/issues/3423
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
 import {
   useGLTF,
   useHelper,
@@ -183,19 +186,18 @@ const Point = ({
       <>
         <Instance
           ref={ref}
-          /* eslint-disable-next-line */
           onPointerOver={(e) => (
             e.stopPropagation(), setHover(true), onNodeSelected(nodeId)
           )}
           onPointerOut={() => setHover(false)}
-          onClick={(e) => onNodeClick(dialogData.hash)}
+          onClick={() => onNodeClick(dialogData.hash)}
         />
       </>
     </group>
   )
 }
 
-const PointDialog = ({ position, dialogData, onNodeClick, config }) => {
+const PointDialog = ({ position, dialogData, config }) => {
   const ref = useRef()
 
   const scale = 1.002
@@ -266,9 +268,9 @@ const Lights = ({ config }) => {
 
     // storm effect
     let currentPosition = 15
-    // if (parseInt(t) % 4 === 1) {
-    //   currentPosition = (Math.random() * 15) | 0
-    // }
+    if (parseInt(t) % 4 === 1) {
+      currentPosition = (Math.random() * 15) | 0
+    }
 
     groupL.current.position.x = (Math.sin(t) / 4) * currentPosition
     groupL.current.position.y = (Math.cos(t) / 4) * currentPosition
@@ -283,11 +285,11 @@ const Lights = ({ config }) => {
     front.current.position.z = (Math.sin(t) / 4) * 10
   })
 
-  // if (config.debug === true) {
-  useHelper(lightL, THREE.PointLightHelper)
-  useHelper(lightR, THREE.PointLightHelper)
-  useHelper(lightF, THREE.PointLightHelper)
-  // }
+  if (config.debug === true) {
+    useHelper(lightL, THREE.PointLightHelper)
+    useHelper(lightR, THREE.PointLightHelper)
+    useHelper(lightF, THREE.PointLightHelper)
+  }
 
   return (
     <>
@@ -341,7 +343,7 @@ const Particles = ({ count }) => {
     return temp
   }, [count])
 
-  useFrame((state) => {
+  useFrame(() => {
     particles.forEach((particle, i) => {
       let { t, factor, speed, xFactor, yFactor, zFactor } = particle
 
