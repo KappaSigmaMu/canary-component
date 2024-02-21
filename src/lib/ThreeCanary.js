@@ -1,13 +1,3 @@
-import * as THREE from "three"
-import React, {
-  useMemo,
-  useRef,
-  useState,
-  Suspense,
-  useLayoutEffect,
-} from "react"
-import styled, { keyframes } from "styled-components"
-import { Canvas, useFrame } from "@react-three/fiber"
 import {
   useGLTF,
   useHelper,
@@ -16,7 +6,17 @@ import {
   OrbitControls,
   Html,
 } from "@react-three/drei"
+import { Canvas, useFrame } from "@react-three/fiber"
 import { EffectComposer, Bloom, Glitch } from "@react-three/postprocessing"
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  Suspense,
+  useLayoutEffect,
+} from "react"
+import styled, { keyframes } from "styled-components"
+import * as THREE from "three"
 import { canaryConfig } from "./CanaryConfig"
 import { gilConfig } from "./GilConfig"
 

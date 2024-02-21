@@ -31,14 +31,14 @@ const nodesDataFactory = (n) => {
         "/assets/t2.jpg"])
     })
   }
-  return data;
+  return data
 }
 
 // Example hosting component
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       nodesData: nodesDataFactory(150),
       nodeSelected: null
