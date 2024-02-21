@@ -21,26 +21,22 @@
     "url": "git+https://github.com/KappaSigmaMu/canary-component.git"
   },
   "dependencies": {
-    "@babel/polyfill": "7.12.1",
-    "@react-three/drei": "9.99.0",
-    "@react-three/fiber": "8.15.16",
-    "@react-three/postprocessing": "2.16.0",
-    "@types/three": "0.161.2",
+    "@babel/polyfill": "^7.12.1",
+    "@react-three/drei": "^9.99.0",
+    "@react-three/fiber": "^8.15.16",
+    "@react-three/postprocessing": "^2.16.0",
+    "@types/three": "^0.161.2",
     "core-js": "^3.36.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.1.8",
-    "three": "0.161.0"
+    "three": "^0.161.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "7.23.9",
     "@babel/preset-env": "^7.23.9",
-    "react-scripts": "5.0.1"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
