@@ -24,7 +24,7 @@ const canaryConfig = {
   },
   pointLight: {
     position: [0, 0, 0],
-    intensity: [100, 100, 100],
+    intensity: [50, 50, 50],
     distance: 10,
     color: ["ciano", "magenta", "magenta"],
   },
