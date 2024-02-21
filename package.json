@@ -1,6 +1,6 @@
 {
   "name": "@kappasigmamu/canary-component",
-  "version": "0.4.7",
+  "version": "0.4.8-experimental",
   "description": "React Component that renders the KappaSigmaMu Canary in 3D",
   "keywords": [
     "kusama",
@@ -10,10 +10,10 @@
     "threejs",
     "3d"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "build/index.js",
+  "module": "build/index.js",
   "files": [
-    "dist",
+    "build",
     "README.md"
   ],
   "repository": {
@@ -35,6 +35,7 @@
   "devDependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "7.23.9",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.23.9",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.56.0",
