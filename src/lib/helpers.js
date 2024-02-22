@@ -1,5 +1,5 @@
-import { canaryConfig } from "../config/CanaryConfig"
-import { gilConfig } from "../config/GilConfig"
+import { canaryConfig } from "./config/CanaryConfig"
+import { gilConfig } from "./config/GilConfig"
 
 // Generate a random integer between min and max
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min

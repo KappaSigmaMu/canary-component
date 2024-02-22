@@ -1,6 +1,6 @@
+import { Lights, Particles, Points, CameraControls, Model } from "./Components"
+import { defaultConfig } from "./helpers"
 import { ThreeCanary } from "./ThreeCanary"
-import { Lights, Particles, Points, CameraControls, Model } from "../components"
-import { defaultConfig } from "../helpers"
 
 export {
   defaultConfig,
