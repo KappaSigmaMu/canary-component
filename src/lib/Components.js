@@ -20,7 +20,7 @@ import React, {
 import styled, { keyframes } from "styled-components"
 import * as THREE from "three"
 import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls"
-import { brandPalette, resolve, randomN } from "../helpers"
+import { brandPalette, resolve, randomN } from "./helpers"
 
 const color = new THREE.Color()
 
