@@ -6,31 +6,31 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "CameraControls", {
   enumerable: true,
   get: function get() {
-    return _components.CameraControls;
+    return _Components.CameraControls;
   }
 });
 Object.defineProperty(exports, "Lights", {
   enumerable: true,
   get: function get() {
-    return _components.Lights;
+    return _Components.Lights;
   }
 });
 Object.defineProperty(exports, "Model", {
   enumerable: true,
   get: function get() {
-    return _components.Model;
+    return _Components.Model;
   }
 });
 Object.defineProperty(exports, "Particles", {
   enumerable: true,
   get: function get() {
-    return _components.Particles;
+    return _Components.Particles;
   }
 });
 Object.defineProperty(exports, "Points", {
   enumerable: true,
   get: function get() {
-    return _components.Points;
+    return _Components.Points;
   }
 });
 Object.defineProperty(exports, "ThreeCanary", {
@@ -45,6 +45,6 @@ Object.defineProperty(exports, "defaultConfig", {
     return _helpers.defaultConfig;
   }
 });
+var _Components = require("./Components");
+var _helpers = require("./helpers");
 var _ThreeCanary = require("./ThreeCanary");
-var _components = require("../components");
-var _helpers = require("../helpers");

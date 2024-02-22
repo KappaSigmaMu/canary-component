@@ -10,8 +10,8 @@ var _drei = require("@react-three/drei");
 var _fiber = require("@react-three/fiber");
 var _postprocessing = require("@react-three/postprocessing");
 var _react = _interopRequireWildcard(require("react"));
-var _components = require("../components");
-var _helpers = require("../helpers");
+var _Components = require("./Components");
+var _helpers = require("./helpers");
 // https://github.com/jsx-eslint/eslint-plugin-react/issues/3423
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/prop-types */
@@ -31,7 +31,7 @@ const ThreeCanary = props => {
     near: 0.1,
     far: 1000,
     zoom: 1
-  }), /*#__PURE__*/_react.default.createElement(_components.Lights, {
+  }), /*#__PURE__*/_react.default.createElement(_Components.Lights, {
     config: config
   }), /*#__PURE__*/_react.default.createElement("gridHelper", {
     position: config.gridPosition,
@@ -39,18 +39,18 @@ const ThreeCanary = props => {
     args: [40, 40]
   }), /*#__PURE__*/_react.default.createElement(_react.Suspense, {
     fallback: null
-  }, /*#__PURE__*/_react.default.createElement(_components.Model, {
+  }, /*#__PURE__*/_react.default.createElement(_Components.Model, {
     scale: config.model.scale,
     objectUrl: props.objectUrl,
     meshColorIndex: config.meshColorIndex,
     meshScale: config.meshScale,
     model: config.model
-  }), /*#__PURE__*/_react.default.createElement(_components.Points, {
+  }), /*#__PURE__*/_react.default.createElement(_Components.Points, {
     objectUrl: props.objectUrl,
     nodesData: props.nodes,
     onNodeClick: props.onNodeClick,
     config: config
-  }), /*#__PURE__*/_react.default.createElement(_components.Particles, {
+  }), /*#__PURE__*/_react.default.createElement(_Components.Particles, {
     count: isMobile ? 50 : 200
   }), /*#__PURE__*/_react.default.createElement(_postprocessing.EffectComposer, {
     multisampling: 16
@@ -63,7 +63,7 @@ const ThreeCanary = props => {
     delay: config.glitch.delay,
     strength: config.glitch.strength,
     duration: config.glitch.duration
-  }))), /*#__PURE__*/_react.default.createElement(_components.CameraControls, {
+  }))), /*#__PURE__*/_react.default.createElement(_Components.CameraControls, {
     config: config
   }));
 };
