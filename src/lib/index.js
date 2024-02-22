@@ -1,3 +1,13 @@
-import { ThreeCanary, defaultConfig } from "./ThreeCanary"
+import { ThreeCanary } from "./ThreeCanary"
+import { Lights, Particles, Points, CameraControls, Model } from "../components"
+import { defaultConfig } from "../helpers"
 
-export { ThreeCanary, defaultConfig }
+export {
+  defaultConfig,
+  ThreeCanary,
+  CameraControls,
+  Lights,
+  Model,
+  Particles,
+  Points,
+}

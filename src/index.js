@@ -1,11 +1,10 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { ThreeCanary, defaultConfig } from "./lib/ThreeCanary"
+import { ThreeCanary, defaultConfig } from "./lib"
 
 import "./styles.css"
 
 // Utils
-
 const choose = (choices) => {
   let index = Math.floor(Math.random() * choices.length)
   return choices[index]
@@ -29,7 +28,6 @@ const nodesDataFactory = (n) => {
 }
 
 // Example hosting component
-
 class App extends React.Component {
   constructor(props) {
     super(props)
